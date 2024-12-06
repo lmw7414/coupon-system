@@ -39,3 +39,4 @@ out/
 
 .env
 /load-test/__pycache__/**
+/mysql/data/**
