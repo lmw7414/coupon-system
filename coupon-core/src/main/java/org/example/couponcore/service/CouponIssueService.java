@@ -5,9 +5,11 @@ import org.example.couponcore.exception.CouponIssueException;
 import org.example.couponcore.exception.ErrorCode;
 import org.example.couponcore.model.Coupon;
 import org.example.couponcore.model.CouponIssue;
+import org.example.couponcore.model.event.CouponIssueCompleteEvent;
 import org.example.couponcore.repository.mysql.CouponIssueJpaRepository;
 import org.example.couponcore.repository.mysql.CouponIssueRepository;
 import org.example.couponcore.repository.mysql.CouponJpaRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,13 +22,16 @@ public class CouponIssueService {
     private final CouponJpaRepository couponJpaRepository;
     private final CouponIssueJpaRepository couponIssueJpaRepository;
     private final CouponIssueRepository couponIssueRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public void issue(long couponId, long userId) {
         Coupon coupon = findCouponWithLock(couponId);
         coupon.issue();
         saveCouponIssue(couponId, userId);
+        publishCouponEvent(coupon);
     }
+
 
     /* 이 구조의 문제점
     @Transactional
@@ -51,7 +56,6 @@ public class CouponIssueService {
     4. 트랜잭션 종료
     5. lock 반납
      */
-
     @Transactional(readOnly = true)
     public Coupon findCoupon(long couponId) {
         return couponJpaRepository.findById(couponId)
@@ -81,4 +85,9 @@ public class CouponIssueService {
         }
     }
 
+    private void publishCouponEvent(Coupon coupon) {
+        if(coupon.isIssueComplete()) {
+            applicationEventPublisher.publishEvent(new CouponIssueCompleteEvent(coupon.getId()));
+        }
+    }
 }
