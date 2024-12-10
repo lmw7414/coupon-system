@@ -1,6 +1,6 @@
 
 # 선착순 쿠폰 시스템
-### 1. Architecture
+## 1. Architecture
 ![전체 구조](img/architecture.png)
 ## STEP 1. MySQL 기반의 쿠폰 발급 기능
 ![구조1](img/step1_1.png)
@@ -107,7 +107,7 @@ public CouponRedisEntity getCouponCache(long couponId) { // 캐시에 쿠폰 정
 - Redis가 싱글쓰레드로 동작한다고 해서 동시성 문제가 발생하지 않는다고 생각할 수 있다.
 - 하지만 여러 서버에서 동시에 Redis를 접근하여 사용할 때 검증 단계에서 값을 조회하는 과정에 동시성 문제가 발생할 수 있다.
 - 따라서 Redis와 검증할 때의 통신 과정을 락을 통해 동시성 문제를 해결해야 한다.
-- 
+  
 ### Refactoring 3) Redis Script 활용하기
 #### 문제점
 - 이전 Redis의 동시성 문제 발생 가능성을 생각해 분산락으로 동시성 문제를 해결했었다.
