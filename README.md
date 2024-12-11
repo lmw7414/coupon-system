@@ -41,8 +41,8 @@ public void execute(String lockName, long waitMilliSecond, long leaseMilliSecond
     }
  
 ```
-- Row Lock(행 잠금)<MySQL>
-  - 특정 행에 대해서만 Lock을 검
+- X Lock<MySQL>
+  - 특정 행에 대해서 read/write Lock을 검
   - 하지만 이 방식은 DB 요청이 많아질 시에 병목이 발생할 수 있다. 확장될 수 없는 구조...
 ```mysql
 START TRANSACTION;
