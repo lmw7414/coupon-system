@@ -58,7 +58,7 @@ public interface CouponJpaRepository extends JpaRepository<Coupon, Long> {
     Optional<Coupon> findCouponWithLock(long id);
 }
 ```
-## STEP 2. Redis 기반을 쿠폰 발급 기능
+## STEP 2. Redis 기반의 쿠폰 발급 기능
 ### 기존 방식의 문제점
 - API 서버의 과부하
   1. N명의 유저가 요청을 보냄
